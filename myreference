@@ -1,0 +1,264 @@
+Login successful.
+
+You don't have any projects. You can try to create a new project, by running
+
+    oc new-project <projectname>
+
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc whoami --show-console 
+.ansible/       DO288/          .kube/          repo01/
+.bash_history   DO288-apps/     lab-configure   .ssh/
+.bash_logout    Documents/      .local/         Templates/
+.bash_profile   Downloads/      .mozilla/       .venv/
+.bashrc         .esd_auth       Music/          Videos/
+.cache/         .grading/       Pictures/       .viminfo
+.config/        grading_master/ .pki/           work/
+Desktop/        .ICEauthority   Public/         
+[student@workstation ~]$ oc whoami --show-console 
+.ansible/       DO288/          .kube/          repo01/
+.bash_history   DO288-apps/     lab-configure   .ssh/
+.bash_logout    Documents/      .local/         Templates/
+.bash_profile   Downloads/      .mozilla/       .venv/
+.bashrc         .esd_auth       Music/          Videos/
+.cache/         .grading/       Pictures/       .viminfo
+.config/        grading_master/ .pki/           work/
+Desktop/        .ICEauthority   Public/         
+[student@workstation ~]$ oc whoami --show-console 
+https://console-openshift-console.apps.ocp4.example.com
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ clear
+
+[student@workstation ~]$ podman images
+REPOSITORY  TAG         IMAGE ID    CREATED     SIZE
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ podman pull quay.io/redhattraining/php-hello-dockerfile
+Trying to pull quay.io/redhattraining/php-hello-dockerfile:latest...
+Getting image source signatures
+Copying blob 4f4fb700ef54 done  
+Copying blob 787f47dbeaac done  
+Copying blob 9a2248075f21 done  
+Copying blob 4237a9c40767 done  
+Copying blob 112c011f26c4 done  
+Copying blob 6a5240d60dc4 done  
+Copying blob 4f4fb700ef54 skipped: already exists  
+Copying blob 4f4fb700ef54 skipped: already exists  
+Writing manifest to image destination
+Storing signatures
+9c2414356684fdc733685e15931c897dd759053558c3db0da66b93461d5b8d4a
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ podman images
+REPOSITORY                                   TAG         IMAGE ID      CREATED      SIZE
+quay.io/redhattraining/php-hello-dockerfile  latest      9c2414356684  3 years ago  265 MB
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ podman tag quay.io/redhattraining/php-hello-dockerfile quay.io/jdogaga/redhattraining-php-hello-Dockerfile
+Error: normalizing name "quay.io/jdogaga/redhattraining-php-hello-Dockerfile": error normalizing name "quay.io/jdogaga/redhattraining-php-hello-Dockerfile": repository name must be lowercase
+[student@workstation ~]$ podman tag quay.io/redhattraining/php-hello-dockerfile quay.io/jdogaga/redhattraining-php-hello-dockerfile
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ podman images
+REPOSITORY                                           TAG         IMAGE ID      CREATED      SIZE
+quay.io/redhattraining/php-hello-dockerfile          latest      9c2414356684  3 years ago  265 MB
+quay.io/jdogaga/redhattraining-php-hello-dockerfile  latest      9c2414356684  3 years ago  265 MB
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ podman push quay.io/jdogaga/redhattraining-php-hello-dockerfile
+Getting image source signatures
+Error: trying to reuse blob sha256:24d85c895b6b870f6b84327a5e31aa567a5d30588de0a0bdd9a669ec5012339c at destination: checking whether a blob sha256:24d85c895b6b870f6b84327a5e31aa567a5d30588de0a0bdd9a669ec5012339c exists in quay.io/jdogaga/redhattraining-php-hello-dockerfile: unauthorized: authentication required
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ podma login quay.io
+bash: podma: command not found...
+[student@workstation ~]$ podman login quay.io
+Username: jdogaga
+Password: 
+Login Succeeded!
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ podman push quay.io/jdogaga/redhattraining-php-hello-dockerfile
+Getting image source signatures
+Copying blob 0c5f71b7b4f6 skipped: already exists  
+Copying blob c613b100be16 skipped: already exists  
+Copying blob c91b0ef634c3 skipped: already exists  
+Copying blob 24d85c895b6b skipped: already exists  
+Copying blob 5f70bf18a086 skipped: already exists  
+Copying blob d291d9db14fc skipped: already exists  
+Copying blob 5f70bf18a086 skipped: already exists  
+Copying blob 5f70bf18a086 skipped: already exists  
+Writing manifest to image destination
+Storing signatures
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ cat ${XDG_RUNTIME_DIR}/containers/auth.json
+{
+	"auths": {
+		"quay.io": {
+			"auth": "amRvZ2FnYTpBZG1pbjMyMQ=="
+		}
+	}
+}[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ podman logout quay.io
+Removed login credentials for quay.io
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ cat ${XDG_RUNTIME_DIR}/containers/auth.json
+{
+	"auths": {}
+}[student@workstation ~]$ 
+[student@workstation ~]$ oc import-image myimage jdogaga/redhattraining-php-hello-dockerfile --from=quay.io/jdogaga/redhattraining-php-hello-dockerfile --confirm
+Error from server (Forbidden): imagestreams.image.openshift.io "myimage" is forbidden: User "developer" cannot get resource "imagestreams" in API group "image.openshift.io" in the namespace "default"
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc new-project p1
+Now using project "p1" on server "https://api.ocp4.example.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app rails-postgresql-example
+
+to build a new example application in Ruby. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=k8s.gcr.io/e2e-test-images/agnhost:2.33 -- /agnhost serve-hostname
+
+[student@workstation ~]$ 
+[student@workstation ~]$ oc import-image myimage jdogaga/redhattraining-php-hello-dockerfile --from=quay.io/jdogaga/redhattraining-php-hello-dockerfile --confirm
+error: tag latest failed: you may not have access to the container image "quay.io/jdogaga/redhattraining-php-hello-dockerfile:latest"
+imagestream.image.openshift.io/myimage imported with errors
+
+Name:			myimage
+Namespace:		p1
+Created:		Less than a second ago
+Labels:			<none>
+Annotations:		openshift.io/image.dockerRepositoryCheck=2023-03-24T07:40:58Z
+Image Repository:	default-route-openshift-image-registry.apps.ocp4.example.com/p1/myimage
+Image Lookup:		local=false
+Unique Images:		0
+Tags:			1
+
+latest
+  tagged from quay.io/jdogaga/redhattraining-php-hello-dockerfile
+
+  ! error: Import failed (Unauthorized): you may not have access to the container image "quay.io/jdogaga/redhattraining-php-hello-dockerfile:latest"
+      Less than a second ago
+
+
+[student@workstation ~]$ 
+[student@workstation ~]$ podman login quay.io
+Username: jdogaga
+Password: 
+Login Succeeded!
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ cat ${XDG_RUNTIME_DIR}/containers/auth.json
+{
+	"auths": {
+		"quay.io": {
+			"auth": "amRvZ2FnYTpBZG1pbjMyMQ=="
+		}
+	}
+}[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc create secret generic quay-registry --from-file .dockerconfigjson=${XDG_RUNTIME_DIR}/containers/auth.json --type kubernetes.io/dockerconfigjson
+secret/quay-registry created
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get sc
+NAME                    PROVISIONER                                   RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+nfs-storage (default)   k8s-sigs.io/nfs-subdir-external-provisioner   Delete          Immediate           false                  211d
+[student@workstation ~]$ oc get sa
+NAME       SECRETS   AGE
+builder    2         2m49s
+default    2         2m49s
+deployer   2         2m49s
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc secret link builder quay-registry
+[student@workstation ~]$ 
+[student@workstation ~]$ oc import-image myimage jdogaga/redhattraining-php-hello-dockerfile --from=quay.io/jdogaga/redhattraining-php-hello-dockerfile --confirm
+imagestream.image.openshift.io/myimage imported
+
+Name:			myimage
+Namespace:		p1
+Created:		4 minutes ago
+Labels:			<none>
+Annotations:		openshift.io/image.dockerRepositoryCheck=2023-03-24T07:44:59Z
+Image Repository:	default-route-openshift-image-registry.apps.ocp4.example.com/p1/myimage
+Image Lookup:		local=false
+Unique Images:		1
+Tags:			1
+
+latest
+  tagged from quay.io/jdogaga/redhattraining-php-hello-dockerfile
+
+  * quay.io/jdogaga/redhattraining-php-hello-dockerfile@sha256:8e97257d3251f40e242fe2d94379806a1eb483f22d0648de6d120dc26fca8afc
+      Less than a second ago
+
+Image Name:	myimage:latest
+Docker Image:	quay.io/jdogaga/redhattraining-php-hello-dockerfile@sha256:8e97257d3251f40e242fe2d94379806a1eb483f22d0648de6d120dc26fca8afc
+Name:		sha256:8e97257d3251f40e242fe2d94379806a1eb483f22d0648de6d120dc26fca8afc
+Created:	Less than a second ago
+Annotations:	image.openshift.io/dockerLayersOrder=ascending
+Image Size:	85.93MB in 8 layers
+Layers:		70.95MB	sha256:787f47dbeaac926cc8c927a48e8a84fc97e05fbd1c08a4c9c4ddcaddfd87e2f7
+		1.483kB	sha256:6a5240d60dc4e1ade0d103badb2a897e8103ebf0ebe08350cd582bbc9671cc7a
+		14.98MB	sha256:9a2248075f215effb81563d5e248101bbe924128940731bc9a8bba399de3ae81
+		251B	sha256:4237a9c40767ab6b4c6d59a051f1fe43e2bbfcf438023b4bf0ef79c2a0de4054
+		4.943kB	sha256:112c011f26c4b5af5612c167165de7369d7b7e690a63ad0bb0ab6c3cf5c54f43
+		32B	sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+		0B	sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+		0B	sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+Image Created:	3 years ago
+Author:		<none>
+Arch:		amd64
+Command:	/bin/sh -c php-fpm & httpd -D FOREGROUND
+Working Dir:	<none>
+User:		1001
+Exposes Ports:	8080/tcp
+Docker Labels:	architecture=x86_64
+		authoritative-source-url=registry.access.redhat.com
+		build-date=2019-04-25T16:26:03.051400
+		com.redhat.build-host=cpt-0013.osbs.prod.upshift.rdu2.redhat.com
+		com.redhat.component=ubi8-container
+		com.redhat.license_terms=https://www.redhat.com/licenses/eulas
+		description=The Universal Base Image is designed and engineered to be the base layer for all of your containerized applications, middleware and utilities. This base image is freely redistributable, but Red Hat only supports Red Hat technologies through subscriptions for Red Hat products. This image is maintained by Red Hat and updated regularly.
+		distribution-scope=public
+		io.k8s.description=The Universal Base Image is designed and engineered to be the base layer for all of your containerized applications, middleware and utilities. This base image is freely redistributable, but Red Hat only supports Red Hat technologies through subscriptions for Red Hat products. This image is maintained by Red Hat and updated regularly.
+		io.k8s.display-name=Red Hat Universal Base Image 8
+		io.openshift.expose-services=
+		io.openshift.tags=base rhel8
+		maintainer=Red Hat, Inc.
+		name=ubi8
+		release=122
+		summary=Provides the latest release of Red Hat Universal Base Image 8.
+		url=https://access.redhat.com/containers/#/registry.access.redhat.com/ubi8/images/8.0-122
+		vcs-ref=d5ff1490fad8f1b57e451d384d3b331e94cf6fe4
+		vcs-type=git
+		vendor=Red Hat, Inc.
+		version=8.0
+Environment:	PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+		container=oci
+
+
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get is
+NAME      IMAGE REPOSITORY                                                          TAGS     UPDATED
+myimage   default-route-openshift-image-registry.apps.ocp4.example.com/p1/myimage   latest   10 seconds ago
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc import-image myimage jdogaga/redhattraining-php-hello-dockerfile --from=quay.io/jdogaga/redhattraining-php-hello-dockerfile --confirm
+
