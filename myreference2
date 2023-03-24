@@ -1,0 +1,569 @@
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 264 insertions(+)
+ create mode 100644 myreference
+[student@workstation mydataDO288]$ git push 
+Username for 'https://github.com': jeffreydavid
+Password for 'https://jeffreydavid@github.com': 
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 3.42 KiB | 3.42 MiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/jeffreydavid/mydataDO288
+ * [new branch]      main -> main
+[student@workstation mydataDO288]$ 
+[student@workstation mydataDO288]$ 
+[student@workstation mydataDO288]$ 
+[student@workstation mydataDO288]$ 
+[student@workstation mydataDO288]$ cd
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ clear
+
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc new-project s2i-demo
+Now using project "s2i-demo" on server "https://api.ocp4.example.com:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app rails-postgresql-example
+
+to build a new example application in Ruby. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=k8s.gcr.io/e2e-test-images/agnhost:2.33 -- /agnhost serve-hostname
+
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get all
+No resources found in s2i-demo namespace.
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get route -n openshift-image-registry 
+Error from server (Forbidden): routes.route.openshift.io is forbidden: User "developer" cannot list resource "routes" in API group "route.openshift.io" in the namespace "openshift-image-registry"
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc login -u admin -p redhat
+Login successful.
+
+You have access to 71 projects, the list has been suppressed. You can list all projects with 'oc projects'
+
+Using project "s2i-demo".
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get route -n openshift-image-registry 
+NAME            HOST/PORT                                                      PATH   SERVICES         PORT    TERMINATION   WILDCARD
+default-route   default-route-openshift-image-registry.apps.ocp4.example.com          image-registry   <all>   reencrypt     None
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc whoami
+admin
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc whoami -t
+sha256~_3_Img240NrfaQVSD670_Q_so-f8piWYDIdPXBH0Hnk
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ podman login default-route-openshift-image-registry.apps.ocp4.example.com
+Username: admin
+Password: 
+Login Succeeded!
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ cat ${XDG_RUNTIME_DIR}/containers/auth.json
+{
+	"auths": {
+		"default-route-openshift-image-registry.apps.ocp4.example.com": {
+			"auth": "YWRtaW46c2hhMjU2fl8zX0ltZzI0ME5yZmFRVlNENjcwX1Ffc28tZjhwaVdZRElkUFhCSDBIbms="
+		},
+		"quay.io": {
+			"auth": "amRvZ2FnYTpBZG1pbjMyMQ=="
+		}
+	}
+}[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get sa
+NAME       SECRETS   AGE
+builder    2         8m5s
+default    2         8m5s
+deployer   2         8m5s
+[student@workstation ~]$ 
+[student@workstation ~]$ oc create secret generic quay-registry --from-file .dockerconfigjson=${XDG_RUNTIME_DIR}/containers/auth.json --type kubernetes.io/dockerconfigjson
+secret/quay-registry created
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get secret
+NAME                       TYPE                                  DATA   AGE
+builder-dockercfg-2x9px    kubernetes.io/dockercfg               1      11m
+builder-token-4zkm9        kubernetes.io/service-account-token   4      11m
+builder-token-62sjk        kubernetes.io/service-account-token   4      11m
+default-dockercfg-pzqcl    kubernetes.io/dockercfg               1      11m
+default-token-84dfx        kubernetes.io/service-account-token   4      11m
+default-token-fln44        kubernetes.io/service-account-token   4      11m
+deployer-dockercfg-7jss5   kubernetes.io/dockercfg               1      11m
+deployer-token-rw92p       kubernetes.io/service-account-token   4      11m
+deployer-token-tb2m2       kubernetes.io/service-account-token   4      11m
+quay-registry              kubernetes.io/dockerconfigjson        1      25s
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc secrets link builder quay-registry
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get is
+No resources found in s2i-demo namespace.
+[student@workstation ~]$ 
+[student@workstation ~]$ oc import-image myimage openshift/httpd --from=default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd --confirm
+error: tag latest failed: Internal error occurred: default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:latest: endpoint "https://default-route-openshift-image-repositry.apps.ocp4.example.com" does not support v2 API (got 503 Service Unavailable)
+imagestream.image.openshift.io/myimage imported with errors
+
+Name:			myimage
+Namespace:		s2i-demo
+Created:		Less than a second ago
+Labels:			<none>
+Annotations:		openshift.io/image.dockerRepositoryCheck=2023-03-24T10:12:30Z
+Image Repository:	default-route-openshift-image-registry.apps.ocp4.example.com/s2i-demo/myimage
+Image Lookup:		local=false
+Unique Images:		0
+Tags:			1
+
+latest
+  tagged from default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd
+
+  ! error: Import failed (InternalError): Internal error occurred: default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:latest: endpoint "https://default-route-openshift-image-repositry.apps.ocp4.example.com" does not support v2 API (got 503 Service Unavailable)
+      Less than a second ago
+
+
+[student@workstation ~]$ oc import-image myimage openshift/httpd --from=default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:2.4 --confirm
+error: the tag "latest" points to "default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd" - use the 'tag' command if you want to change the source to "default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:2.4"
+[student@workstation ~]$ oc import-image myimage openshift/httpd:2.4 --from=default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:2.4 --confirm
+error: the tag "latest" points to "default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd" - use the 'tag' command if you want to change the source to "default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:2.4"
+[student@workstation ~]$ oc import-image myimage openshift/httpd:latest --from=default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:latest --confirm
+error: the tag "latest" points to "default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd" - use the 'tag' command if you want to change the source to "default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:latest"
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get is 
+NAME      IMAGE REPOSITORY                                                                TAGS     UPDATED
+myimage   default-route-openshift-image-registry.apps.ocp4.example.com/s2i-demo/myimage   latest   
+[student@workstation ~]$ 
+[student@workstation ~]$ oc delete is myimage
+imagestream.image.openshift.io "myimage" deleted
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get is 
+No resources found in s2i-demo namespace.
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc import-image myimage openshift/httpd:latest --from=default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:latest --confirm
+error: tag latest failed: Internal error occurred: default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:latest: endpoint "https://default-route-openshift-image-repositry.apps.ocp4.example.com" does not support v2 API (got 503 Service Unavailable)
+imagestream.image.openshift.io/myimage imported with errors
+
+Name:			myimage
+Namespace:		s2i-demo
+Created:		Less than a second ago
+Labels:			<none>
+Annotations:		openshift.io/image.dockerRepositoryCheck=2023-03-24T10:17:10Z
+Image Repository:	default-route-openshift-image-registry.apps.ocp4.example.com/s2i-demo/myimage
+Image Lookup:		local=false
+Unique Images:		0
+Tags:			1
+
+latest
+  tagged from default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:latest
+
+  ! error: Import failed (InternalError): Internal error occurred: default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:latest: endpoint "https://default-route-openshift-image-repositry.apps.ocp4.example.com" does not support v2 API (got 503 Service Unavailable)
+      Less than a second ago
+
+
+[student@workstation ~]$ oc get is 
+NAME      IMAGE REPOSITORY                                                                TAGS     UPDATED
+myimage   default-route-openshift-image-registry.apps.ocp4.example.com/s2i-demo/myimage   latest   
+[student@workstation ~]$ oc delete is myimage
+imagestream.image.openshift.io "myimage" deleted
+[student@workstation ~]$ oc import-image myimage:latest openshift/httpd --from=default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd --confirm
+error: tag latest failed: Internal error occurred: default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:latest: endpoint "https://default-route-openshift-image-repositry.apps.ocp4.example.com" does not support v2 API (got 503 Service Unavailable)
+imagestream.image.openshift.io/myimage imported with errors
+
+Name:			myimage
+Namespace:		s2i-demo
+Created:		Less than a second ago
+Labels:			<none>
+Annotations:		openshift.io/image.dockerRepositoryCheck=2023-03-24T10:17:58Z
+Image Repository:	default-route-openshift-image-registry.apps.ocp4.example.com/s2i-demo/myimage
+Image Lookup:		local=false
+Unique Images:		0
+Tags:			1
+
+latest
+  tagged from default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd
+
+  ! error: Import failed (InternalError): Internal error occurred: default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:latest: endpoint "https://default-route-openshift-image-repositry.apps.ocp4.example.com" does not support v2 API (got 503 Service Unavailable)
+      Less than a second ago
+
+
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc whoami
+admin
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc delete is myimage
+imagestream.image.openshift.io "myimage" deleted
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc import-image myimage:latest openshift/httpd --from=default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:2.4 --confirm
+error: tag 2.4 failed: Internal error occurred: default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:2.4: endpoint "https://default-route-openshift-image-repositry.apps.ocp4.example.com" does not support v2 API (got 503 Service Unavailable)
+imagestream.image.openshift.io/myimage imported with errors
+
+Name:			myimage
+Namespace:		s2i-demo
+Created:		Less than a second ago
+Labels:			<none>
+Annotations:		openshift.io/image.dockerRepositoryCheck=2023-03-24T10:19:39Z
+Image Repository:	default-route-openshift-image-registry.apps.ocp4.example.com/s2i-demo/myimage
+Image Lookup:		local=false
+Unique Images:		0
+Tags:			1
+
+latest
+  tagged from default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:2.4
+
+  ! error: Import failed (InternalError): Internal error occurred: default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:2.4: endpoint "https://default-route-openshift-image-repositry.apps.ocp4.example.com" does not support v2 API (got 503 Service Unavailable)
+      Less than a second ago
+
+
+[student@workstation ~]$ 
+[student@workstation ~]$ oc delete is myimage
+imagestream.image.openshift.io "myimage" deleted
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc import-image myimage openshift/httpd --from=default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:2.4 --confirm
+error: tag 2.4 failed: Internal error occurred: default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:2.4: endpoint "https://default-route-openshift-image-repositry.apps.ocp4.example.com" does not support v2 API (got 503 Service Unavailable)
+imagestream.image.openshift.io/myimage imported with errors
+
+Name:			myimage
+Namespace:		s2i-demo
+Created:		Less than a second ago
+Labels:			<none>
+Annotations:		openshift.io/image.dockerRepositoryCheck=2023-03-24T10:20:11Z
+Image Repository:	default-route-openshift-image-registry.apps.ocp4.example.com/s2i-demo/myimage
+Image Lookup:		local=false
+Unique Images:		0
+Tags:			1
+
+latest
+  tagged from default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:2.4
+
+  ! error: Import failed (InternalError): Internal error occurred: default-route-openshift-image-repositry.apps.ocp4.example.com/openshift/httpd:2.4: endpoint "https://default-route-openshift-image-repositry.apps.ocp4.example.com" does not support v2 API (got 503 Service Unavailable)
+      Less than a second ago
+
+
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get is
+NAME      IMAGE REPOSITORY                                                                TAGS     UPDATED
+myimage   default-route-openshift-image-registry.apps.ocp4.example.com/s2i-demo/myimage   latest   
+[student@workstation ~]$ 
+[student@workstation ~]$ oc delete is myimage
+imagestream.image.openshift.io "myimage" deleted
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get is -n openshift-image-registry 
+No resources found in openshift-image-registry namespace.
+[student@workstation ~]$ oc delete is myimage
+Error from server (NotFound): imagestreams.image.openshift.io "myimage" not found
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc import-image myimage openshift/httpd --from=default-route-openshift-image-registry.apps.ocp4.example.com/openshift/httpd:2.4 --confirm
+imagestream.image.openshift.io/myimage imported
+
+Name:			myimage
+Namespace:		s2i-demo
+Created:		Less than a second ago
+Labels:			<none>
+Annotations:		openshift.io/image.dockerRepositoryCheck=2023-03-24T10:25:08Z
+Image Repository:	default-route-openshift-image-registry.apps.ocp4.example.com/s2i-demo/myimage
+Image Lookup:		local=false
+Unique Images:		1
+Tags:			1
+
+latest
+  tagged from default-route-openshift-image-registry.apps.ocp4.example.com/openshift/httpd:2.4
+
+  * default-route-openshift-image-registry.apps.ocp4.example.com/openshift/httpd@sha256:97d5a697c40756b75a606110b77c8cf9a8d284309fe8817a7e9a591e9562b5a2
+      Less than a second ago
+
+Image Name:	myimage:2.4
+Docker Image:	default-route-openshift-image-registry.apps.ocp4.example.com/openshift/httpd@sha256:97d5a697c40756b75a606110b77c8cf9a8d284309fe8817a7e9a591e9562b5a2
+Name:		sha256:97d5a697c40756b75a606110b77c8cf9a8d284309fe8817a7e9a591e9562b5a2
+Created:	Less than a second ago
+Annotations:	image.openshift.io/dockerLayersOrder=ascending
+Image Size:	121.4MB in 4 layers
+Layers:		76.55MB	sha256:e5746dd3575a92053f5871f0c54fdc950a16d792b816f1b798e2ebbd4956b793
+		1.816kB	sha256:1c42cd59ba3e0759f1177deb1ff3e4151c7815d732060c46addb2ba1f37d0fb8
+		7.241MB	sha256:78fa487001cb0a670d8de0fd05c8ec49d86089b8f8090d086d9bb2b28f3b4f35
+		37.62MB	sha256:15f0698bae7661201acc9864fd5206fd33316a2fab59433f19122f1eaa6981de
+Image Created:	7 months ago
+Author:		<none>
+Arch:		amd64
+Entrypoint:	container-entrypoint
+Command:	/usr/bin/run-httpd
+Working Dir:	/opt/app-root/src
+User:		1001
+Exposes Ports:	8080/tcp, 8443/tcp
+Docker Labels:	architecture=x86_64
+		build-date=2022-08-04T07:36:23.581571
+		com.redhat.build-host=cpt-1006.osbs.prod.upshift.rdu2.redhat.com
+		com.redhat.component=httpd24-container
+		com.redhat.license_terms=https://www.redhat.com/en/about/red-hat-end-user-license-agreements#rhel
+		description=Apache httpd 2.4 available as container, is a powerful, efficient, and extensible web server. Apache supports a variety of features, many implemented as compiled modules which extend the core functionality. These can range from server-side programming language support to authentication schemes. Virtual hosting allows one Apache installation to serve many different Web sites.
+		distribution-scope=public
+		io.k8s.description=Apache httpd 2.4 available as container, is a powerful, efficient, and extensible web server. Apache supports a variety of features, many implemented as compiled modules which extend the core functionality. These can range from server-side programming language support to authentication schemes. Virtual hosting allows one Apache installation to serve many different Web sites.
+		io.k8s.display-name=Apache httpd 2.4
+		io.openshift.expose-services=8080:http,8443:https
+		io.openshift.s2i.scripts-url=image:///usr/libexec/s2i
+		io.openshift.tags=builder,httpd,httpd24
+		io.s2i.scripts-url=image:///usr/libexec/s2i
+		maintainer=SoftwareCollections.org <sclorg@redhat.com>
+		name=rhscl/httpd-24-rhel7
+		release=202
+		summary=Platform for running Apache httpd 2.4 or building httpd-based application
+		url=https://access.redhat.com/containers/#/registry.access.redhat.com/rhscl/httpd-24-rhel7/images/2.4-202
+		usage=s2i build https://github.com/sclorg/httpd-container.git --context-dir=examples/sample-test-app/ rhscl/httpd-24-rhel7 sample-server
+		vcs-ref=b6d4659c0313de0332320b57314c382e1d21a273
+		vcs-type=git
+		vendor=Red Hat, Inc.
+		version=2.4
+Environment:	PATH=/opt/app-root/src/bin:/opt/app-root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+		container=oci
+		SUMMARY=Platform for running Apache httpd 2.4 or building httpd-based application
+		DESCRIPTION=Apache httpd 2.4 available as container, is a powerful, efficient, and extensible web server. Apache supports a variety of features, many implemented as compiled modules which extend the core functionality. These can range from server-side programming language support to authentication schemes. Virtual hosting allows one Apache installation to serve many different Web sites.
+		STI_SCRIPTS_URL=image:///usr/libexec/s2i
+		STI_SCRIPTS_PATH=/usr/libexec/s2i
+		APP_ROOT=/opt/app-root
+		HOME=/opt/app-root/src
+		PLATFORM=el7
+		BASH_ENV=/opt/app-root/scl_enable
+		ENV=/opt/app-root/scl_enable
+		PROMPT_COMMAND=. /opt/app-root/scl_enable
+		HTTPD_VERSION=2.4
+		HTTPD_CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/httpd/
+		HTTPD_APP_ROOT=/opt/app-root
+		HTTPD_CONFIGURATION_PATH=/opt/app-root/etc/httpd.d
+		HTTPD_MAIN_CONF_PATH=/etc/httpd/conf
+		HTTPD_MAIN_CONF_MODULES_D_PATH=/etc/httpd/conf.modules.d
+		HTTPD_MAIN_CONF_D_PATH=/etc/httpd/conf.d
+		HTTPD_TLS_CERT_PATH=/etc/httpd/tls
+		HTTPD_VAR_RUN=/var/run/httpd
+		HTTPD_DATA_PATH=/var/www
+		HTTPD_DATA_ORIG_PATH=/opt/rh/httpd24/root/var/www
+		HTTPD_LOG_PATH=/var/log/httpd24
+		HTTPD_SCL=httpd24
+
+
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ oc get is
+NAME      IMAGE REPOSITORY                                                                TAGS     UPDATED
+myimage   default-route-openshift-image-registry.apps.ocp4.example.com/s2i-demo/myimage   latest   12 seconds ago
+[student@workstation ~]$ 
+[student@workstation ~]$ 
+[student@workstation ~]$ mkdir work11 ; cd work11
+[student@workstation work11]$ 
+[student@workstation work11]$ 
+[student@workstation work11]$ git clone https://github.com/cprakash2118/repo02
+Cloning into 'repo02'...
+remote: Enumerating objects: 70, done.
+remote: Counting objects: 100% (25/25), done.
+remote: Compressing objects: 100% (13/13), done.
+remote: Total 70 (delta 13), reused 18 (delta 10), pack-reused 45
+Receiving objects: 100% (70/70), 205.68 KiB | 785.00 KiB/s, done.
+Resolving deltas: 100% (13/13), done.
+[student@workstation work11]$ 
+[student@workstation work11]$ 
+[student@workstation work11]$ git clone https://github.com/jeffreydavid/repo02
+fatal: destination path 'repo02' already exists and is not an empty directory.
+[student@workstation work11]$ 
+[student@workstation work11]$ 
+[student@workstation work11]$ ll
+total 0
+drwxrwxr-x. 4 student student 48 Mar 24 06:49 repo02
+[student@workstation work11]$ rm -rf repo02/
+[student@workstation work11]$ 
+[student@workstation work11]$ 
+[student@workstation work11]$ git clone https://github.com/jeffreydavid/repo02
+Cloning into 'repo02'...
+remote: Enumerating objects: 70, done.
+remote: Counting objects: 100% (25/25), done.
+remote: Compressing objects: 100% (13/13), done.
+remote: Total 70 (delta 13), reused 18 (delta 10), pack-reused 45
+Receiving objects: 100% (70/70), 205.68 KiB | 741.00 KiB/s, done.
+Resolving deltas: 100% (13/13), done.
+[student@workstation work11]$ 
+[student@workstation work11]$ 
+[student@workstation work11]$ ll
+total 0
+drwxrwxr-x. 4 student student 48 Mar 24 06:50 repo02
+[student@workstation work11]$ cd repo02/
+[student@workstation repo02]$ 
+[student@workstation repo02]$ 
+[student@workstation repo02]$ ll
+total 4
+-rw-rw-r--. 1 student student 28 Mar 24 06:50 index.html
+[student@workstation repo02]$ 
+[student@workstation repo02]$ 
+[student@workstation repo02]$ ls -l
+total 4
+-rw-rw-r--. 1 student student 28 Mar 24 06:50 index.html
+[student@workstation repo02]$ ls -la
+total 4
+drwxrwxr-x. 4 student student  48 Mar 24 06:50 .
+drwxrwxr-x. 3 student student  20 Mar 24 06:50 ..
+drwxrwxr-x. 8 student student 163 Mar 24 06:50 .git
+-rw-rw-r--. 1 student student  28 Mar 24 06:50 index.html
+drwxrwxr-x. 3 student student  17 Mar 24 06:50 .s2i
+[student@workstation repo02]$ cd .s2i/
+[student@workstation .s2i]$ 
+[student@workstation .s2i]$ 
+[student@workstation .s2i]$ ll
+total 0
+drwxrwxr-x. 2 student student 33 Mar 24 06:50 bin
+[student@workstation .s2i]$ cd bin/
+[student@workstation bin]$ 
+[student@workstation bin]$ ll
+total 8
+-rw-rw-r--. 1 student student 1332 Mar 24 06:50 assemble
+-rw-rw-r--. 1 student student  171 Mar 24 06:50 run
+[student@workstation bin]$ vi assemble 
+[student@workstation bin]$ 
+[student@workstation bin]$ 
+[student@workstation bin]$ cd ..
+[student@workstation .s2i]$ cd ..
+[student@workstation repo02]$ 
+[student@workstation repo02]$ 
+[student@workstation repo02]$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .s2i/bin/assemble
+
+no changes added to commit (use "git add" and/or "git commit -a")
+[student@workstation repo02]$ git add .
+[student@workstation repo02]$ git commit -m changes
+[master d88d305] changes
+ Committer: Student User <student@workstation.lab.example.com>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+[student@workstation repo02]$ git push 
+Username for 'https://github.com': jeffreydavid
+Password for 'https://jeffreydavid@github.com': 
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (5/5), 442 bytes | 442.00 KiB/s, done.
+Total 5 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/jeffreydavid/repo02
+   0f3b01d..d88d305  master -> master
+[student@workstation repo02]$ 
+[student@workstation repo02]$ 
+[student@workstation repo02]$ oc new-app --name deployment-01 --as-deployment-config  myimage~https://github.com/jeffreydavid/repo02
+warning: Cannot check if git requires authentication.
+--> Found image 9a73ba1 (7 months old) in image stream "s2i-demo/myimage" under tag "latest" for "myimage"
+
+    Apache httpd 2.4 
+    ---------------- 
+    Apache httpd 2.4 available as container, is a powerful, efficient, and extensible web server. Apache supports a variety of features, many implemented as compiled modules which extend the core functionality. These can range from server-side programming language support to authentication schemes. Virtual hosting allows one Apache installation to serve many different Web sites.
+
+    Tags: builder, httpd, httpd24
+
+    * A source build using source code from https://github.com/jeffreydavid/repo02 will be created
+      * The resulting image will be pushed to image stream tag "deployment-01:latest"
+      * Use 'oc start-build' to trigger a new build
+    * This image will be deployed in deployment config "deployment-01"
+    * Ports 8080/tcp, 8443/tcp will be load balanced by service "deployment-01"
+      * Other containers can access this service through the hostname "deployment-01"
+
+--> Creating resources ...
+    imagestream.image.openshift.io "deployment-01" created
+    buildconfig.build.openshift.io "deployment-01" created
+    deploymentconfig.apps.openshift.io "deployment-01" created
+    service "deployment-01" created
+--> Success
+    Build scheduled, use 'oc logs -f buildconfig/deployment-01' to track its progress.
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose service/deployment-01' 
+    Run 'oc status' to view your app.
+[student@workstation repo02]$ 
+[student@workstation repo02]$ 
+[student@workstation repo02]$ oc get pods
+NAME                     READY   STATUS              RESTARTS   AGE
+deployment-01-1-build    0/1     Completed           0          29s
+deployment-01-1-deploy   1/1     Running             0          4s
+deployment-01-1-x7krr    0/1     ContainerCreating   0          0s
+[student@workstation repo02]$ 
+[student@workstation repo02]$ 
+[student@workstation repo02]$ oc get pods
+NAME                     READY   STATUS              RESTARTS   AGE
+deployment-01-1-build    0/1     Completed           0          34s
+deployment-01-1-deploy   1/1     Running             0          9s
+deployment-01-1-x7krr    0/1     ContainerCreating   0          5s
+[student@workstation repo02]$ oc get pods
+NAME                     READY   STATUS              RESTARTS   AGE
+deployment-01-1-build    0/1     Completed           0          38s
+deployment-01-1-deploy   1/1     Running             0          13s
+deployment-01-1-x7krr    0/1     ContainerCreating   0          9s
+[student@workstation repo02]$ oc get pods
+NAME                     READY   STATUS      RESTARTS   AGE
+deployment-01-1-build    0/1     Completed   0          42s
+deployment-01-1-deploy   0/1     Completed   0          17s
+deployment-01-1-x7krr    1/1     Running     0          13s
+[student@workstation repo02]$ 
+[student@workstation repo02]$ 
+[student@workstation repo02]$ oc get route
+No resources found in s2i-demo namespace.
+[student@workstation repo02]$ oc get svc
+NAME            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
+deployment-01   ClusterIP   172.30.104.155   <none>        8080/TCP,8443/TCP   86s
+[student@workstation repo02]$ 
+[student@workstation repo02]$ 
+[student@workstation repo02]$ oc expose svc deployment-01 
+route.route.openshift.io/deployment-01 exposed
+[student@workstation repo02]$ 
+[student@workstation repo02]$ 
+[student@workstation repo02]$ oc get route
+NAME            HOST/PORT                                      PATH   SERVICES        PORT       TERMINATION   WILDCARD
+deployment-01   deployment-01-s2i-demo.apps.ocp4.example.com          deployment-01   8080-tcp                 None
+[student@workstation repo02]$ 
+
